@@ -90,8 +90,7 @@ CelIA comenzó desde una idea simple: **"Si los argentinos no entienden el siste
 
 ---
 
-**Contacto:** [nicolasaddamo1@gmail.com] | [https://nicolasaddamo.vercel.app] 
-**Licencia:** [Indica si es open-source, privado, etc.]  
+**Contacto:** nicolasaddamo1@gmail.com | https://nicolasaddamo.vercel.app 
 
 ---  
 **"La libertad económica empieza con una buena decisión. CelIA te ayuda a tomarla."**  
