@@ -13,4 +13,4 @@ export class CreateCategoryDto {
     transactionts?: string[]
 }
 
-export class UpdateUserDto extends PartialType(CreateCategoryDto) { }
+export class UpdateCategoryDto extends PartialType(CreateCategoryDto) { }
