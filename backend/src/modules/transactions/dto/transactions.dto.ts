@@ -1,3 +1,4 @@
+import { PartialType } from "@nestjs/mapped-types";
 import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 import { Category } from "src/Entity/category.entity";
 import { User } from "src/Entity/user.entity";
@@ -21,3 +22,5 @@ export class TransactionsDto {
     @IsNotEmpty()
     category: Category;
 }
+
+export class UpdateTransactionDto extends PartialType(TransactionsDto) { }
