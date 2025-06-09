@@ -1,7 +1,7 @@
 # **Whitepaper: CelIA – Asistente Financiero Inteligente para Argentina**  
 **Versión 1.0**  
-**Autor: [Tu Nombre o Empresa]**  
-**Fecha: [Fecha]**  
+**Autor: MaximusCorp**  
+**Fecha: 9/6/2025**  
 
 ---
 
