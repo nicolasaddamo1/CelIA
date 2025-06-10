@@ -6,9 +6,19 @@ import { UsersModule } from './modules/users/users.module';
 import { TransactionsModule } from './modules/transactions/transactions.module';
 import { ImportFilesModule } from './modules/import-files/import-files.module';
 import { CategoriesModule } from './modules/categories/categories.module';
+import { ConfigModule } from '@nestjs/config';
+import { Category } from './Entity/category.entity';
+import { User } from './Entity/user.entity';
+import { Transaction } from './Entity/transaction.enetity';
+import { ImportFile } from './Entity/importFile.entity';
+
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST || 'localhost',
@@ -16,15 +26,13 @@ import { CategoriesModule } from './modules/categories/categories.module';
       username: process.env.DB_USER || 'postgres',
       password: process.env.DB_PASS,
       database: process.env.DB_NAME,
-      entities: [__dirname + '/**/*.entity.{ts,js}'],
+      entities: [Category, User, Transaction, ImportFile],
       synchronize: true,
-
     }),
     UsersModule,
     TransactionsModule,
     ImportFilesModule,
     CategoriesModule
-
   ],
   controllers: [AppController],
   providers: [AppService],
