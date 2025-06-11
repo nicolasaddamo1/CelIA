@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { Transaction } from './transaction.enetity';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Transaction } from "./transaction.enetity";
+import { ImportFile } from "./importFile.entity";
 
 @Entity()
 export class User {
@@ -12,6 +13,21 @@ export class User {
     @Column()
     name: string;
 
+    @Column({ nullable: true })
+    telegramId: string;
+
+    @Column({ select: false })
+    password: string;
+
+    @CreateDateColumn()
+    createdAt: Date;
+
+    @UpdateDateColumn()
+    updatedAt: Date;
+
     @OneToMany(() => Transaction, transaction => transaction.user)
     transactions: Transaction[];
+
+    @OneToMany(() => ImportFile, file => file.user)
+    files: ImportFile[];
 }

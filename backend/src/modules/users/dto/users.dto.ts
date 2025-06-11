@@ -12,8 +12,18 @@ export class createUserDto {
     @IsNotEmpty()
     name: string;
 
+    @IsString()
+    @IsNotEmpty()
+    password: string;
+
+    @IsOptional()
+    @IsString()
+    telegramId?: string;
+
     @IsOptional()
     transactions?: Transaction[];
+
+
 }
 
 export class UpdateUserDto extends PartialType(createUserDto) { } 
