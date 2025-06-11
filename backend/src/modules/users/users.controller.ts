@@ -19,7 +19,7 @@ export class UsersController {
     }
 
     @Post()
-    async createUser(@Body() user: createUserDto): Promise<Partial<User>> {
+    async createUser(@Body() user: createUserDto): Promise<Partial<User> | string> {
         return await this.usersService.createUser(user);
     }
 
