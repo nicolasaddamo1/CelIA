@@ -12,11 +12,9 @@ export class AuthService {
     ) { }
     async signin(dto: LoginDto) {
         const user = await this.userService.findByEmailWithPassword(dto.email);
-        console.log(user)
         if (typeof user === 'string') {
             return user;
         }
-        console.log(dto.password, user.password);
         const isMatch = await bcrypt.compare(dto.password, user.password);
         if (!isMatch) {
             throw new UnauthorizedException('Credenciales inválidas');
