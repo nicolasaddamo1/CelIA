@@ -57,4 +57,12 @@ export class UsersService {
         await this.userRepository.remove(userToDelete);
         return "User deleted";
     }
+
+    async findByEmailWithPassword(email: string): Promise<User | string> {
+        const user = await this.userRepository.findOneBy({ email });
+        if (!user) {
+            return "User not found";
+        }
+        return user;
+    }
 }
