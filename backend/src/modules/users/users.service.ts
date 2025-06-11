@@ -60,6 +60,7 @@ export class UsersService {
 
     async findByEmailWithPassword(email: string): Promise<User | string> {
         const user = await this.userRepository.findOneBy({ email });
+        console.log("User en findByEmailWithPassword:", user);
         if (!user) {
             return "User not found";
         }

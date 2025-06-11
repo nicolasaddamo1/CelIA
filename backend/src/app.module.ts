@@ -11,6 +11,7 @@ import { Category } from './Entity/category.entity';
 import { User } from './Entity/user.entity';
 import { Transaction } from './Entity/transaction.enetity';
 import { ImportFile } from './Entity/importFile.entity';
+import { AuthModule } from './modules/auth/auth.module';
 
 
 @Module({
@@ -29,6 +30,7 @@ import { ImportFile } from './Entity/importFile.entity';
       entities: [Category, User, Transaction, ImportFile],
       synchronize: true,
     }),
+    AuthModule,
     UsersModule,
     TransactionsModule,
     ImportFilesModule,

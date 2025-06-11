@@ -16,7 +16,7 @@ export class User {
     @Column({ nullable: true })
     telegramId: string;
 
-    @Column({ select: false })
+    @Column()
     password: string;
 
     @CreateDateColumn()
