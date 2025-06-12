@@ -21,7 +21,9 @@ export class CategoriesService {
         return category;
     }
 
-    async create(dto: CreateCategoryDto) {
+    async create(dto: CreateCategoryDto): Promise<Category | string> {
+        const existingCategory = await this.categoryRepo.findOne({ where: { name: dto.name } });
+        if (existingCategory) return "La categoría ya existe";
         const category = this.categoryRepo.create(dto);
         return this.categoryRepo.save(category);
     }
