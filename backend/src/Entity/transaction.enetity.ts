@@ -7,9 +7,6 @@ export class Transaction {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column()
-    date: Date;
-
     @Column('decimal', { precision: 10, scale: 2 })
     amount: number;
 
