@@ -4,8 +4,8 @@ import { Category } from './category.entity';
 
 @Entity()
 export class Transaction {
-    @PrimaryGeneratedColumn()
-    id: number;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
     @Column()
     date: Date;
@@ -15,6 +15,9 @@ export class Transaction {
 
     @Column()
     description: string;
+
+    @Column({ type: 'date' })
+    date: Date;
 
     @ManyToOne(() => User, user => user.transactions)
     user: User;
