@@ -11,7 +11,7 @@ import * as path from 'path';
 @Controller('import-files')
 export class ImportFilesController {
     constructor(private readonly importFilesService: ImportFilesService) { }
-
+    @UseGuards(JwtAuthGuard)
     @Post('upload')
     @UseInterceptors(
         FileInterceptor('file', {
