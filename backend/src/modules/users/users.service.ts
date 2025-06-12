@@ -15,7 +15,10 @@ export class UsersService {
         return this.userRepository.find();
     }
     async getUsersById(id: string): Promise<string | User> {
-        const user = await this.userRepository.findOneBy({ id });
+        const user = await this.userRepository.findOne({
+            where: { id },
+            select: ['id', 'email', 'name', 'telegramId']
+        });
         if (!user) {
             return "User not found";
         }

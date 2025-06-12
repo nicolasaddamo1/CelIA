@@ -5,6 +5,7 @@ import { ImportFile } from 'src/Entity/importFile.entity';
 import { User } from 'src/Entity/user.entity';
 import { CreateImportFilesDto } from './dto/import-files.dto';
 import * as csv from 'fast-csv';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class ImportFilesService {
@@ -12,6 +13,7 @@ export class ImportFilesService {
     constructor(
         @InjectRepository(ImportFile)
         private importFileRepo: Repository<ImportFile>,
+        private userService: UsersService
     ) { }
 
     async parseCSV(file: Express.Multer.File) {
@@ -24,13 +26,18 @@ export class ImportFilesService {
         });
     }
 
-    async create(dto: CreateImportFilesDto, user: User) {
+    async create(dto: CreateImportFilesDto, userJwtPayload: { userId: string }) {
+        const user = await this.userService.getUsersById(userJwtPayload.userId);
+        if (!user) {
+            throw new Error('User not found');
+        }
         const file = this.importFileRepo.create({
             fileName: dto.fileName,
             uploadDate: new Date(),
-            user,
+            user: user as User,
         });
-        return this.importFileRepo.save(file);
+        const result = await this.importFileRepo.save(file);
+        return result;
     }
 
     async findAllByUser(userId: string) {
