@@ -1,13 +1,14 @@
 import { IsNotEmpty, IsString } from "class-validator";
 import { PartialType } from "@nestjs/mapped-types";
+import { CreateDateColumn } from "typeorm";
 
-export class ImportFilesDto {
+export class CreateImportFilesDto {
     @IsString()
     @IsNotEmpty()
     fileName: string;
 
     @IsString()
-    @IsNotEmpty()
+    @CreateDateColumn()
     uploadDate: Date;
 
     @IsString()
@@ -15,4 +16,4 @@ export class ImportFilesDto {
     user: string;
 }
 
-export class UpdateImportFilesDto extends PartialType(ImportFilesDto) { }
+export class UpdateImportFilesDto extends PartialType(CreateImportFilesDto) { }
