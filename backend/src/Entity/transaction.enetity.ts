@@ -16,7 +16,7 @@ export class Transaction {
     @Column({ type: 'date' })
     date: Date;
 
-    @ManyToOne(() => User, user => user.transactions)
+    @ManyToOne(() => User, (user) => user.transactions)
     user: User;
 
     @ManyToOne(() => Category, category => category.transactions)

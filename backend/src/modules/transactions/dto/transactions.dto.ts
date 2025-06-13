@@ -3,7 +3,7 @@ import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 import { Category } from "src/Entity/category.entity";
 import { User } from "src/Entity/user.entity";
 
-export class TransactionsDto {
+export class CreateTransactionsDto {
     @IsNotEmpty()
     @IsString()
     date: Date;
@@ -18,6 +18,9 @@ export class TransactionsDto {
 
     @IsNotEmpty()
     category: Category;
+
+    @IsNotEmpty()
+    user: User
 }
 
-export class UpdateTransactionDto extends PartialType(TransactionsDto) { }
+export class UpdateTransactionDto extends PartialType(CreateTransactionsDto) { }
