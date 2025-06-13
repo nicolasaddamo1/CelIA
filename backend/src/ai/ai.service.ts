@@ -16,7 +16,7 @@ export class AiService {
         };
 
         const data = {
-            model: model, // puedes cambiar a "gpt-4", "claude-3", etc.
+            model: model,
             messages: [
                 { role: 'system', content: 'Eres un asesor financiero inteligente.' },
                 { role: 'user', content: prompt },
