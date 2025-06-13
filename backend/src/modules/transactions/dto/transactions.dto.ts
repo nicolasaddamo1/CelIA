@@ -4,8 +4,8 @@ import { Category } from "src/Entity/category.entity";
 import { User } from "src/Entity/user.entity";
 
 export class TransactionsDto {
-    @IsString()
     @IsNotEmpty()
+    @IsString()
     date: Date;
 
     @IsNumber()
@@ -15,9 +15,6 @@ export class TransactionsDto {
     @IsString()
     @IsOptional()
     description?: string;
-
-    @IsNotEmpty()
-    user: User;
 
     @IsNotEmpty()
     category: Category;
