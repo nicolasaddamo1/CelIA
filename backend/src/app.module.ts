@@ -12,6 +12,7 @@ import { User } from './Entity/user.entity';
 import { Transaction } from './Entity/transaction.enetity';
 import { ImportFile } from './Entity/importFile.entity';
 import { AuthModule } from './modules/auth/auth.module';
+import { AiModule } from './ai/ai.module';
 
 
 @Module({
@@ -31,10 +32,12 @@ import { AuthModule } from './modules/auth/auth.module';
       synchronize: true,
     }),
     AuthModule,
+    AiModule,
     UsersModule,
     TransactionsModule,
     ImportFilesModule,
-    CategoriesModule
+    CategoriesModule,
+    AiModule
   ],
   controllers: [AppController],
   providers: [AppService],
