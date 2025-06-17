@@ -12,7 +12,7 @@ import { User } from './Entity/user.entity';
 import { Transaction } from './Entity/transaction.enetity';
 import { ImportFile } from './Entity/importFile.entity';
 import { AuthModule } from './modules/auth/auth.module';
-import { AiModule } from './ai/ai.module';
+import { AiModule } from './modules/ai/ai.module';
 
 
 @Module({

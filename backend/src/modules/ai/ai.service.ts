@@ -1,3 +1,55 @@
+// import { Injectable } from '@nestjs/common';
+// import { ConfigService } from '@nestjs/config';
+// import { Transaction } from 'src/Entity/transaction.enetity';
+// import axios from 'axios';
+
+// @Injectable()
+// export class AiService {
+//     private readonly OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
+
+//     async analyzeTransactions(transactions: Transaction[], model = 'mistral') {
+//         const prompt = this.generatePrompt(transactions);
+
+//         const headers = {
+//             'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+//             'Content-Type': 'application/json',
+//         };
+
+//         const data = {
+//             model: model,
+//             messages: [
+//                 { role: 'system', content: 'Eres un asesor financiero inteligente.' },
+//                 { role: 'user', content: prompt },
+//             ],
+//         };
+
+//         const response = await axios.post(this.OPENROUTER_URL, data, { headers });
+//         const result = response.data as {
+//             choices: { message: { content: string } }[];
+//         };
+//         return result.choices[0].message.content;
+//     }
+
+//     private generatePrompt(transactions: Transaction[]): string {
+//         const grouped = transactions
+//             .map(t => `${t.date.toISOString().split('T')[0]} - ${t.amount} - ${t.description || 'Sin descripción'} - Categoría: ${t.category?.name || 'N/A'}`)
+//             .join('\n');
+
+//         return `
+// Tengo estas transacciones recientes:
+
+// ${grouped}
+
+// Por favor, analiza mis gastos y dime:
+// - ¿En qué estoy gastando más?
+// - ¿Hay algo que pueda optimizar o reducir?
+// - ¿Me conviene ahorrar en algún rubro específico?
+// Responde de forma clara y amigable.
+// `;
+//     }
+// }
+
+
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Transaction } from 'src/Entity/transaction.enetity';
@@ -6,12 +58,26 @@ import axios from 'axios';
 @Injectable()
 export class AiService {
     private readonly OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
+    private readonly apiKey: string;
 
-    async analyzeTransactions(transactions: Transaction[], model = 'mistral') {
+    constructor(private configService: ConfigService) {
+
+        const apiKey = this.configService.get<string>('OPENROUTER_API_KEY') || process.env.OPENROUTER_API_KEY;
+        if (!apiKey) {
+            throw new Error('OpenRouter API Key is not defined.');
+        }
+        this.apiKey = apiKey;
+
+        if (!this.apiKey) {
+            throw new Error('OpenRouter API Key is not defined.');
+        }
+    }
+
+    async analyzeTransactions(transactions: Transaction[], model = 'openai/gpt-4.1') {
         const prompt = this.generatePrompt(transactions);
 
         const headers = {
-            'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+            'Authorization': `Bearer ${this.apiKey}`,
             'Content-Type': 'application/json',
         };
 
@@ -21,13 +87,28 @@ export class AiService {
                 { role: 'system', content: 'Eres un asesor financiero inteligente.' },
                 { role: 'user', content: prompt },
             ],
+            max_tokens: 5
         };
 
-        const response = await axios.post(this.OPENROUTER_URL, data, { headers });
-        const result = response.data as {
-            choices: { message: { content: string } }[];
-        };
-        return result.choices[0].message.content;
+        try {
+            const response = await axios.post(this.OPENROUTER_URL, data, { headers });
+
+            if (!response.data) {
+                throw new Error('Respuesta inesperada de OpenRouter');
+            }
+
+            return (response.data as any).choices[0].message.content;
+
+        } catch (error: any) {
+            console.error('Error al conectar con OpenRouter:', error.message);
+
+            if (error.response) {
+                console.error('Status:', error.response.status);
+                console.error('Body:', error.response.data);
+            }
+
+            throw new Error('Falló la comunicación con la IA de OpenRouter');
+        }
     }
 
     private generatePrompt(transactions: Transaction[]): string {
