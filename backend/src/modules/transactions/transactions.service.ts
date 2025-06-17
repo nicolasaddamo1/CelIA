@@ -27,10 +27,14 @@ export class TransactionsService {
     }
 
     async findAllByUser(userId: string) {
-        return await this.transactionRepo.find({
+        console
+
+        const result = await this.transactionRepo.find({
             where: { user: { id: userId } },
             order: { date: 'DESC' },
         });
+        console.log(result);
+        return result;
     }
 }
 

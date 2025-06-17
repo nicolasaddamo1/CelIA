@@ -1,66 +1,17 @@
-// import { Injectable } from '@nestjs/common';
-// import { ConfigService } from '@nestjs/config';
-// import { Transaction } from 'src/Entity/transaction.enetity';
-// import axios from 'axios';
-
-// @Injectable()
-// export class AiService {
-//     private readonly OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
-
-//     async analyzeTransactions(transactions: Transaction[], model = 'mistral') {
-//         const prompt = this.generatePrompt(transactions);
-
-//         const headers = {
-//             'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
-//             'Content-Type': 'application/json',
-//         };
-
-//         const data = {
-//             model: model,
-//             messages: [
-//                 { role: 'system', content: 'Eres un asesor financiero inteligente.' },
-//                 { role: 'user', content: prompt },
-//             ],
-//         };
-
-//         const response = await axios.post(this.OPENROUTER_URL, data, { headers });
-//         const result = response.data as {
-//             choices: { message: { content: string } }[];
-//         };
-//         return result.choices[0].message.content;
-//     }
-
-//     private generatePrompt(transactions: Transaction[]): string {
-//         const grouped = transactions
-//             .map(t => `${t.date.toISOString().split('T')[0]} - ${t.amount} - ${t.description || 'Sin descripción'} - Categoría: ${t.category?.name || 'N/A'}`)
-//             .join('\n');
-
-//         return `
-// Tengo estas transacciones recientes:
-
-// ${grouped}
-
-// Por favor, analiza mis gastos y dime:
-// - ¿En qué estoy gastando más?
-// - ¿Hay algo que pueda optimizar o reducir?
-// - ¿Me conviene ahorrar en algún rubro específico?
-// Responde de forma clara y amigable.
-// `;
-//     }
-// }
-
-
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Transaction } from 'src/Entity/transaction.enetity';
 import axios from 'axios';
+import { TransactionsService } from '../transactions/transactions.service';
 
 @Injectable()
 export class AiService {
     private readonly OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
     private readonly apiKey: string;
 
-    constructor(private configService: ConfigService) {
+    constructor(private configService: ConfigService,
+        private readonly transactionService: TransactionsService
+    ) {
 
         const apiKey = this.configService.get<string>('OPENROUTER_API_KEY') || process.env.OPENROUTER_API_KEY;
         if (!apiKey) {
@@ -73,21 +24,22 @@ export class AiService {
         }
     }
 
-    async analyzeTransactions(transactions: Transaction[], model = 'openai/gpt-4.1') {
+    async analyzeTransactions(userId: string, model = 'openai/gpt-4.1') {
+        const transactions = await this.transactionService.findAllByUser(userId);
         const prompt = this.generatePrompt(transactions);
-
+        console.log("Transactions ", transactions);
         const headers = {
             'Authorization': `Bearer ${this.apiKey}`,
             'Content-Type': 'application/json',
         };
-
+        console.log("Prompt ", prompt);
         const data = {
             model: model,
             messages: [
                 { role: 'system', content: 'Eres un asesor financiero inteligente.' },
                 { role: 'user', content: prompt },
             ],
-            max_tokens: 5
+            max_tokens: 100
         };
 
         try {
@@ -113,8 +65,12 @@ export class AiService {
 
     private generatePrompt(transactions: Transaction[]): string {
         const grouped = transactions
-            .map(t => `${t.date.toISOString().split('T')[0]} - ${t.amount} - ${t.description || 'Sin descripción'} - Categoría: ${t.category?.name || 'N/A'}`)
-            .join('\n');
+            .map(t => {
+                const dateStr = t.date instanceof Date ?
+                    t.date.toISOString().split('T')[0] :
+                    new Date(t.date).toISOString().split('T')[0];
+                return `${dateStr} - ${t.amount} - ${t.description || 'Sin descripción'} - Categoría: ${t.category?.name || 'N/A'}`;
+            }).join('\n');
 
         return `
 Tengo estas transacciones recientes:

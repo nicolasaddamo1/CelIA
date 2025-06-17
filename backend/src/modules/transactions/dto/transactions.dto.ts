@@ -18,9 +18,6 @@ export class CreateTransactionsDto {
 
     @IsNotEmpty()
     category: Category;
-
-    @IsNotEmpty()
-    user: User
 }
 
 export class UpdateTransactionDto extends PartialType(CreateTransactionsDto) { }

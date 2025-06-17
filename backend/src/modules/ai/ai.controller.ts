@@ -1,20 +1,23 @@
-import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
 import { AiService } from './ai.service';
-import { TransactionsService } from 'src/modules/transactions/transactions.service';
 import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
+import { Repository } from 'typeorm';
+import { Transaction } from 'src/Entity/transaction.enetity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Controller('ai')
 export class AiController {
     constructor(
         private readonly aiService: AiService,
-        private readonly transactionsService: TransactionsService,
+        @InjectRepository(Transaction)
+
+        private readonly transactionRepository: Repository<Transaction>,
     ) { }
 
     @UseGuards(JwtAuthGuard)
-    @Get('analyze')
-    async analyze(@Req() req) {
-        const userId = req.user.userId;
-        const transactions = await this.transactionsService.findAllByUser(userId);
-        return this.aiService.analyzeTransactions(transactions);
+    @Post('analyze')
+    async analyze(@Body('userId') userId: string) {
+        return this.aiService.analyzeTransactions(userId);
+
     }
 }
