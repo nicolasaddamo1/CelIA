@@ -20,7 +20,7 @@ export default function Login() {
                 throw new Error('Por favor completa todos los campos');
             }
 
-            const res = await axios.post('/auth/signin', {
+            const res = await axios.post('http://localhost:3001/auth/signin', {
                 email: email.trim(),
                 password
             });
