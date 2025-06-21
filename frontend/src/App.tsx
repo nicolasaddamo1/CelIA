@@ -3,6 +3,7 @@ import Login from './pages/Login'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Register from './pages/Register';
 import { PrivateRoute } from './routes/PrivateRoute';
+import Dashboard from './features/dashboard/Dashboard';
 
 function App() {
   return (
