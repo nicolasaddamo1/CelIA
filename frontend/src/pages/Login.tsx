@@ -15,7 +15,6 @@ export default function Login() {
         setLoading(true);
 
         try {
-            // Validación básica antes de la petición
             if (!email.trim() || !password.trim()) {
                 throw new Error('Por favor completa todos los campos');
             }
@@ -25,21 +24,18 @@ export default function Login() {
                 password
             });
 
-            // Verificar que la respuesta tenga la estructura esperada
             if (!res.data || !res.data.access_token) {
                 throw new Error('Respuesta del servidor inválida');
             }
 
             const token = res.data.access_token;
 
-            // Verificar que localStorage esté disponible (por si usas SSR)
             if (typeof window !== 'undefined' && window.localStorage) {
                 localStorage.setItem('token', token);
             }
 
             alert('Inicio de sesión exitoso ✅');
 
-            // Usar replace: true para evitar volver atrás al login
             navigate('/dashboard', { replace: true });
 
         } catch (err) {
@@ -47,12 +43,10 @@ export default function Login() {
 
             let errorMessage = 'Error desconocido';
 
-            // Manejo específico de errores de Axios
             if (axios.isAxiosError(err)) {
                 const axiosError = err as AxiosError<any>;
 
                 if (axiosError.response) {
-                    // El servidor respondió con error
                     const status = axiosError.response.status;
                     const data = axiosError.response.data;
 
@@ -82,14 +76,11 @@ export default function Login() {
                             errorMessage = `Error del servidor (${status})`;
                     }
                 } else if (axiosError.request) {
-                    // No se pudo conectar al servidor
                     errorMessage = 'No se pudo conectar al servidor. Verifica tu conexión a internet.';
                 } else {
-                    // Error en la configuración de la petición
                     errorMessage = 'Error de configuración: ' + axiosError.message;
                 }
             } else if (err instanceof Error) {
-                // Errores custom que lanzamos nosotros
                 errorMessage = err.message;
             }
 
