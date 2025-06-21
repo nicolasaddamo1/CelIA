@@ -2,6 +2,7 @@ import './App.css'
 import Login from './pages/Login'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Register from './pages/Register';
+import { PrivateRoute } from './routes/PrivateRoute';
 
 function App() {
   return (
@@ -10,6 +11,15 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Register />} />
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            }
+          />
+
           {/* <Route path="/" element={<Login />} /> */}
         </Routes>
       </Router>    </div>
