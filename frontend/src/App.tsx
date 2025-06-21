@@ -11,7 +11,7 @@ function App() {
 
       <Router>
         <Routes>
-          <Route path="/" element={<Register />} />
+          <Route path="/register" element={<Register />} />
           <Route
             path="/dashboard"
             element={
@@ -21,7 +21,7 @@ function App() {
             }
           />
 
-          {/* <Route path="/" element={<Login />} /> */}
+          <Route path="/" element={<Login />} />
         </Routes>
       </Router>    </div>
   )
