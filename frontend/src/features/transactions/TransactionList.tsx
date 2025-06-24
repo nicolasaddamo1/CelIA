@@ -66,7 +66,7 @@ export default function TransactionsList({ userId }: { userId: string }) {
                                 <tr key={t.id} className="border-t border-gray-200">
                                     <td className="py-3 px-4">{new Date(t.date).toLocaleDateString()}</td>
                                     <td className="py-3 px-4">{t.description}</td>
-                                    <td className="py-3 px-4">${t.amount.toFixed(2)}</td>
+                                    <td className="py-3 px-4">${Number(t.amount).toFixed(2)}</td>
                                     <td className="py-3 px-4">{t.category?.name || 'Sin categoría'}</td>
                                 </tr>
                             ))
