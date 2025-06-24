@@ -34,4 +34,11 @@ export class TransactionsController {
         const userId = req.user?.userId;
         return this.transactionsService.findAllByUser(userId);
     }
+
+    @Get(':id')
+    async findOne(@Req() req: any) {
+        const userId = req.user?.userId;
+        const transactionId = req.params.id;
+        return this.transactionsService.findAllByUser(userId);
+    }
 }
