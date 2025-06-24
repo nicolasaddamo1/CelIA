@@ -19,20 +19,19 @@ export default function TransactionsList({ userId }: { userId: string }) {
         const fetchTransactions = async () => {
             try {
                 const token = localStorage.getItem('token');
-                if (!token) {
-                    setError('No se encontró un token. Por favor inicia sesión nuevamente.');
-                    return;
-                }
-
-                const response = await axios.get(`http://localhost:3001/transactions/user/${userId}`, {
+                const response = await axios.get(`http://localhost:3001/transactions/${userId}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 });
+
+                console.log('Datos recibidos:', response.data); // 👈 Añade esto
+                console.log('Tipo de amount:', typeof response.data[0]?.amount); // 👈 Y esto
+
                 setTransactions(response.data);
-            } catch (err) {
-                console.error(err);
-                setError('Hubo un error al obtener tus transacciones. Por favor, inténtalo de nuevo.');
+            } catch (error) {
+                console.error('Error fetching transactions:', error);
+                setError('Error al cargar las transacciones');
             }
         };
         fetchTransactions();
