@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
+import TransactionsList from '../transactions/Dashboard';
 
 export default function Dashboard() {
     const [userId, setUserId] = useState<string | null>(null);
@@ -16,7 +17,6 @@ export default function Dashboard() {
 
                 if (id) {
                     setUserId(id);
-                    console.log('User ID decodificado del token:', id);
                 } else {
                     console.error('No se pudo obtener el userId del token');
                 }
@@ -32,9 +32,9 @@ export default function Dashboard() {
         <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-primaryGradientStart via-primaryGradientMid to-primaryGradientEnd text-white">
             <h1 className="text-3xl font-bold">¡Bienvenido al Dashboard! 👋</h1>
             {userId ? (
-                <p className="mt-4 text-lg">Tu ID de usuario es: {userId}</p>
+                <TransactionsList userId={userId} />
             ) : (
-                <p className="mt-4 text-lg">Cargando usuario...</p>
+                <p className="mt-4 text-lg">Cargando transacciones...</p>
             )}
         </div>
     );
