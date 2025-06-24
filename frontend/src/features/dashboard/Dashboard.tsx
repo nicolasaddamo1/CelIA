@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
-import TransactionsList from '../transactions/Dashboard';
+import TransactionsList from '../transactions/TransactionList';
 
 export default function Dashboard() {
     const [userId, setUserId] = useState<string | null>(null);
