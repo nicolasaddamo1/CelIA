@@ -213,30 +213,53 @@ export default function TransactionsList({ userId }: { userId: string }) {
                 </table>
             </div>
             {/* FORM PARA SUBIR CSV */}
-            <form onSubmit={handleCsvUpload} className="bg-gray-100 rounded p-3 mt-4 space-y-3">
-                <h3 className="font-bold">Subir transacciones desde CSV</h3>
-                <input
-                    type="file"
-                    accept=".csv"
-                    onChange={(e) => setCsvFile(e.target.files?.[0] || null)}
-                    className="text-gray-800"
-                />
-                <button
-                    type="submit"
-                    disabled={uploading}
-                    className="bg-green-600 text-white rounded px-4 py-2 hover:bg-green-700 disabled:opacity-50"
-                >
-                    {uploading ? 'Subiendo...' : 'Subir CSV'}
-                </button>
+            <form onSubmit={handleCsvUpload} className="bg-gray-100 rounded-lg p-6 mt-4 space-y-4">
+                <h3 className="font-bold text-lg text-gray-800 text-center mb-4">
+                    Subir transacciones desde CSV
+                </h3>
+
+                <div className="flex flex-col space-y-2">
+                    <label className="text-sm font-medium text-gray-700">
+                        Seleccionar archivo CSV:
+                    </label>
+                    <input
+                        type="file"
+                        accept=".csv"
+                        onChange={(e) => setCsvFile(e.target.files?.[0] || null)}
+                        className="w-full p-3 border border-gray-300 rounded-md text-gray-800 bg-white
+                       file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 
+                       file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700
+                       hover:file:bg-blue-100 cursor-pointer"
+                    />
+                </div>
+
+                <div className="flex justify-center pt-2">
+                    <button
+                        type="submit"
+                        disabled={uploading}
+                        className="bg-green-600 text-white rounded-md px-6 py-3 font-medium
+                       hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed
+                       transition-colors duration-200 min-w-[120px]"
+                    >
+                        {uploading ? 'Subiendo...' : 'Subir CSV'}
+                    </button>
+                </div>
 
                 {uploadError && (
-                    <div className="bg-red-100 text-red-600 p-3 rounded">
-                        {uploadError}
+                    <div className="bg-red-100 border border-red-300 text-red-700 p-4 rounded-md mt-4">
+                        <div className="flex items-center space-x-2">
+                            <span className="font-medium">Error:</span>
+                            <span>{uploadError}</span>
+                        </div>
                     </div>
                 )}
+
                 {uploadSuccess && (
-                    <div className="bg-green-100 text-green-600 p-3 rounded">
-                        {uploadSuccess}
+                    <div className="bg-green-100 border border-green-300 text-green-700 p-4 rounded-md mt-4">
+                        <div className="flex items-center space-x-2">
+                            <span className="font-medium">Éxito:</span>
+                            <span>{uploadSuccess}</span>
+                        </div>
                     </div>
                 )}
             </form>
