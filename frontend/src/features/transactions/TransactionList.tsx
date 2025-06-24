@@ -77,6 +77,39 @@ export default function TransactionsList({ userId }: { userId: string }) {
             setError('Error al crear la transacción');
         }
     };
+    const handleCsvUpload = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!csvFile) {
+            setUploadError('Por favor, selecciona un archivo primero.');
+            return;
+        }
+
+        setUploadError('');
+        setUploadSuccess('');
+        setUploading(true);
+
+        const formData = new FormData();
+        formData.append('file', csvFile);
+
+        try {
+            const token = localStorage.getItem('token');
+            await axios.post('http://localhost:3001/import-files/upload', formData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            setUploadSuccess('✅ El archivo CSV se cargó correctamente');
+            setCsvFile(null);
+            fetchTransactions();
+        } catch (error) {
+            console.error(error);
+            setUploadError('Error al subir el archivo CSV');
+        } finally {
+            setUploading(false);
+        }
+    };
+
     return (
         <div className="p-4 rounded-xl text-orange-200">
             <h2 className="text-2xl font-bold">Tus Transacciones recientes</h2>
@@ -179,6 +212,35 @@ export default function TransactionsList({ userId }: { userId: string }) {
                     </tbody>
                 </table>
             </div>
+            {/* FORM PARA SUBIR CSV */}
+            <form onSubmit={handleCsvUpload} className="bg-gray-100 rounded p-3 mt-4 space-y-3">
+                <h3 className="font-bold">Subir transacciones desde CSV</h3>
+                <input
+                    type="file"
+                    accept=".csv"
+                    onChange={(e) => setCsvFile(e.target.files?.[0] || null)}
+                    className="text-gray-800"
+                />
+                <button
+                    type="submit"
+                    disabled={uploading}
+                    className="bg-green-600 text-white rounded px-4 py-2 hover:bg-green-700 disabled:opacity-50"
+                >
+                    {uploading ? 'Subiendo...' : 'Subir CSV'}
+                </button>
+
+                {uploadError && (
+                    <div className="bg-red-100 text-red-600 p-3 rounded">
+                        {uploadError}
+                    </div>
+                )}
+                {uploadSuccess && (
+                    <div className="bg-green-100 text-green-600 p-3 rounded">
+                        {uploadSuccess}
+                    </div>
+                )}
+            </form>
+
         </div>
     );
 }
