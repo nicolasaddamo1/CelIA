@@ -38,9 +38,9 @@ export default function TransactionsList({ userId }: { userId: string }) {
     }, [userId]);
 
     return (
-        <div className="p-4 rounded-xl text-gray-800">
+        <div className="p-4 rounded-xl text-orange-200">
             <h2 className="text-2xl font-bold">Tus Transacciones recientes</h2>
-            <p className="text-gray-600 text-sm mt-1">
+            <p className="text-orange-200 text-sm mt-1">
                 Aquí encuentras todas las compras que hiciste. Si quieres organizarte, puedes revisarlas una por una.
             </p>
 
