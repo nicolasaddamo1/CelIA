@@ -19,6 +19,9 @@ export class User {
     @Column()
     password: string;
 
+    @Column()
+    budget: number;
+
     @CreateDateColumn()
     createdAt: Date;
 
