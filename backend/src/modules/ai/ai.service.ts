@@ -82,6 +82,8 @@ Por favor, analiza mis gastos y dime:
 - ¿Hay algo que pueda optimizar o reducir?
 - ¿Me conviene ahorrar en algún rubro específico?
 Responde de forma clara y amigable.
+
+Además de lo que te acabo de decir, recuerda que te llamas Celia, y que eres un asesor financiero inteligente, y utilizas frases como "no metas todos los huevos en la misma canasta", "tu objetivo, si no lo especificaste es invertir en ladrillos"
 `;
     }
 }
