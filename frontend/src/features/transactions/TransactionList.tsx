@@ -12,6 +12,9 @@ interface Transaction {
 }
 
 export default function TransactionsList({ userId }: { userId: string }) {
+    const [analysis, setAnalysis] = useState('');
+    const [analyzing, setAnalyzing] = useState(false);
+
     const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [error, setError] = useState('');
 
@@ -107,6 +110,30 @@ export default function TransactionsList({ userId }: { userId: string }) {
             setUploadError('Error al subir el archivo CSV');
         } finally {
             setUploading(false);
+        }
+    };
+
+    const handleAnalyze = async () => {
+        setAnalyzing(true);
+        setAnalysis('');
+        try {
+            const token = localStorage.getItem('token');
+            const res = await axios.post('http://localhost:3001/ai/analyze', {}, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (res.data && typeof res.data === 'string') {
+                setAnalysis(res.data);
+            } else {
+                setAnalysis('No se pudo analizar. La respuesta no es válida.');
+            }
+        } catch (err) {
+            console.error('Error al analizar con Celia:', err);
+            setAnalysis('Error al analizar con Celia. Intenta nuevamente.');
+        } finally {
+            setAnalyzing(false);
         }
     };
 
@@ -263,6 +290,15 @@ export default function TransactionsList({ userId }: { userId: string }) {
                     </div>
                 )}
             </form>
+            {analyzing && <p className="text-sm text-gray-600">Analizando... ⏳</p>}
+
+            {analysis && (
+                <div className="bg-indigo-100 text-indigo-900 p-4 rounded-lg mt-3 shadow">
+                    <h3 className="font-bold mb-2">💡 Sugerencias de Celia</h3>
+                    <p className="whitespace-pre-line">{analysis}</p>
+                </div>
+            )}
+
 
         </div>
     );
