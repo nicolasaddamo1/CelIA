@@ -290,6 +290,12 @@ export default function TransactionsList({ userId }: { userId: string }) {
                     </div>
                 )}
             </form>
+            <button
+                onClick={handleAnalyze}
+                className="mt-4 mb-4 bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition font-semibold"
+            >
+                Analizar con Celia 🧠
+            </button>
             {analyzing && <p className="text-sm text-gray-600">Analizando... ⏳</p>}
 
             {analysis && (
@@ -298,8 +304,6 @@ export default function TransactionsList({ userId }: { userId: string }) {
                     <p className="whitespace-pre-line">{analysis}</p>
                 </div>
             )}
-
-
         </div>
     );
 }
