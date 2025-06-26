@@ -149,6 +149,9 @@ export default function Login() {
                             'Iniciar sesión'
                         )}
                     </button>
+                    <p className="text-sm text-gray-600 mt-4 text-center">
+                        ¿No tienes cuenta? <a href="/register" className="text-blue-600 hover:underline">Regístrate aquí</a>
+                    </p>
                 </form>
             </div>
         </div>

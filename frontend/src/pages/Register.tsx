@@ -36,7 +36,7 @@ export default function Register() {
             }
 
             alert('Registro exitoso ✅ Ahora puedes iniciar sesión');
-            navigate('/login', { replace: true });
+            navigate('/', { replace: true });
         } catch (err) {
             console.error('Register error:', err);
 
