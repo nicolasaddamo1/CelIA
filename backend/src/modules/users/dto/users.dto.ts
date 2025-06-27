@@ -23,6 +23,8 @@ export class createUserDto {
     @IsOptional()
     transactions?: Transaction[];
 
+    @IsOptional()
+    budget?: number;
 
 }
 

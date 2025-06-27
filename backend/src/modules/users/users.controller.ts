@@ -31,6 +31,14 @@ export class UsersController {
     async updateUser(@Param('id') id: string, @Body() user: User): Promise<Partial<User> | string> {
         return await this.usersService.updateUser(id, user);
     }
+    @Put(':id')
+    @UseGuards(JwtAuthGuard)
+    async budget(@Param('id') id: string, @Body() user: User): Promise<Partial<User> | string> {
+        if (!user.budget) {
+            return 'El presupuesto no puede ser nulo';
+        }
+        return await this.usersService.updateUser(id, user);
+    }
 
     @Delete(':id')
     @UseGuards(JwtAuthGuard)
