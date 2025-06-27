@@ -39,7 +39,7 @@ export class AiService {
                 { role: 'system', content: 'Eres un asesor financiero inteligente.' },
                 { role: 'user', content: prompt },
             ],
-            max_tokens: 1500
+            max_tokens: 3500
         };
 
         try {
