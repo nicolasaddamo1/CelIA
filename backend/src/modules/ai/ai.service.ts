@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { Transaction } from 'src/Entity/transaction.enetity';
 import axios from 'axios';
 import { TransactionsService } from '../transactions/transactions.service';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class AiService {
@@ -10,7 +11,8 @@ export class AiService {
     private readonly apiKey: string;
 
     constructor(private configService: ConfigService,
-        private readonly transactionService: TransactionsService
+        private readonly transactionService: TransactionsService,
+        private readonly userService: UsersService
     ) {
 
         const apiKey = this.configService.get<string>('OPENROUTER_API_KEY') || process.env.OPENROUTER_API_KEY;
@@ -26,8 +28,12 @@ export class AiService {
 
     async analyzeTransactions(userId: string, model = 'openai/gpt-4.1') {
         const transactions = await this.transactionService.findAllByUser(userId);
-        const prompt = this.generatePrompt(transactions);
-        console.log("Transactions ", transactions);
+        const userBudget = await this.userService.getUsersById(userId);
+        if (userBudget === "User not found") {
+            throw new Error('User not found');
+        }
+        const budget = typeof userBudget === 'object' && 'budget' in userBudget ? userBudget.budget : 0;
+        const prompt = this.generatePrompt(transactions, budget);
         const headers = {
             'Authorization': `Bearer ${this.apiKey}`,
             'Content-Type': 'application/json',
@@ -63,7 +69,7 @@ export class AiService {
         }
     }
 
-    private generatePrompt(transactions: Transaction[]): string {
+    private generatePrompt(transactions: Transaction[], budget?: number): string {
         const grouped = transactions
             .map(t => {
                 const dateStr = t.date instanceof Date ?
@@ -77,11 +83,13 @@ Tengo estas transacciones recientes:
 
 ${grouped}
 
-Por favor, analiza mis gastos y dime:
+Por favor, analiza mis gastos y dime segun mi presupuesto de ${budget || 'no definido'}:
+- ¿Cómo estoy administrando mi dinero?
 - ¿En qué estoy gastando más?
 - ¿Hay algo que pueda optimizar o reducir?
 - ¿Me conviene ahorrar en algún rubro específico?
 Responde de forma clara y amigable.
+
 
 Además de lo que te acabo de decir, recuerda que te llamas Celia, y que eres un asesor financiero inteligente, y utilizas frases como "no metas todos los huevos en la misma canasta"(no siempre, sino cuando veas que puedes hacerlo)`;
     }
