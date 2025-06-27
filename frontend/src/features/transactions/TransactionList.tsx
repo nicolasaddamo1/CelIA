@@ -21,6 +21,7 @@ export default function TransactionsList({ userId }: { userId: string }) {
     const [newDate, setNewDate] = useState('');
     const [newDescription, setNewDescription] = useState('');
     const [newAmount, setNewAmount] = useState('');
+    const [newBudget, setNewBudget] = useState('');
     const [newCategoryId, setNewCategoryId] = useState('1');
     const [success, setSuccess] = useState('');
 
@@ -136,6 +137,30 @@ export default function TransactionsList({ userId }: { userId: string }) {
             setAnalyzing(false);
         }
     };
+    const handleBudgetUpdate = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setError('');
+        setSuccess('');
+
+        try {
+            const token = localStorage.getItem('token');
+            const payload = {
+                budget: parseFloat(newAmount),
+            };
+            await axios.put(`http://localhost:3001/users/${userId}`, payload, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setSuccess('✅ Presupuesto actualizado exitosamente');
+            setNewAmount('');
+        }
+        catch (error) {
+            console.error(error);
+            setError('Error al actualizar el presupuesto');
+
+        }
+    }
 
     return (
         <div className="p-4 rounded-xl text-orange-500">
@@ -154,6 +179,28 @@ export default function TransactionsList({ userId }: { userId: string }) {
                     {success}
                 </div>
             )}
+            {/* AGREGAR PRESUPUESTO*/}
+            <div className="bg-gray-100 rounded p-3 mt-4 space-y-3">
+                <h3 className="font-bold">Presupuesto</h3>
+                <p className="text-gray-700" >Agrega tu presupuesto mensual:</p>
+                <form className="flex items-center space-x-2">
+                    <input
+                        type="number"
+                        value={newBudget}
+                        onChange={(e) => setNewBudget(e.target.value)}
+                        className="w-full px-3 py-2 rounded text-gray-800"
+                        placeholder="Ej: 1000"
+                        required
+                    />
+                    <button
+                        type="submit"
+                        className="bg-orange-500 text-white px-4 py-2 rounded"
+                        onClick={handleBudgetUpdate}
+                    >
+                        Actualizar
+                    </button>
+                </form>
+            </div>
 
             {/* FORMULARIO PARA CREAR TRANSACCIÓN */}
             <form onSubmit={handleCreateTransaction} className="bg-gray-100 rounded p-3 mt-4 space-y-3">
