@@ -218,7 +218,7 @@ export default function TransactionsList({ userId }: { userId: string }) {
                             type="number"
                             value={newBudget}
                             onChange={(e) => setNewBudget(e.target.value)}
-                            className="w-full px-4 py-3 text-xl border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                            className="w-full px-4 py-3 text-xl text-gray-700 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
                             placeholder="Ejemplo: 50000"
                         />
                         <p className="text-gray-500 text-sm mt-1">Escribe solo números, sin puntos ni comas</p>
@@ -250,7 +250,7 @@ export default function TransactionsList({ userId }: { userId: string }) {
                             type="date"
                             value={newDate}
                             onChange={(e) => setNewDate(e.target.value)}
-                            className="w-full px-4 py-3 text-xl border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                            className="w-full px-4 py-3 text-xl text-gray-700 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
                         />
                     </div>
                     <div>
@@ -261,7 +261,7 @@ export default function TransactionsList({ userId }: { userId: string }) {
                             type="text"
                             value={newDescription}
                             onChange={(e) => setNewDescription(e.target.value)}
-                            className="w-full px-4 py-3 text-xl border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                            className="w-full px-4 py-3 text-xl text-gray-700 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
                             placeholder="Ejemplo: Compras en el supermercado"
                         />
                     </div>
@@ -274,7 +274,7 @@ export default function TransactionsList({ userId }: { userId: string }) {
                             step="0.01"
                             value={newAmount}
                             onChange={(e) => setNewAmount(e.target.value)}
-                            className="w-full px-4 py-3 text-xl border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                            className="w-full px-4 py-3 text-xl text-gray-700 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
                             placeholder="Ejemplo: 2500.50"
                         />
                         <p className="text-gray-500 text-sm mt-1">Puedes usar punto para los centavos (ejemplo: 2500.50)</p>
@@ -286,7 +286,7 @@ export default function TransactionsList({ userId }: { userId: string }) {
                         <select
                             value={newCategoryId}
                             onChange={(e) => setNewCategoryId(e.target.value)}
-                            className="w-full px-4 py-3 text-xl border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                            className="w-full px-4 py-3 text-xl text-gray-700 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
                         >
                             <option value="1">1 - Comida y supermercado</option>
                             <option value="2">2 - Transporte</option>
