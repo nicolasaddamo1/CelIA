@@ -214,10 +214,25 @@ export default function TransactionsList({ userId }: { userId: string }) {
     const handleAnalyze = async () => {
         setAnalyzing(true);
         setAnalysis('');
-        setTimeout(() => {
-            setAnalysis('Basándome en tus gastos, veo que gastas más en comida los fines de semana. Te sugiero hacer una lista de compras antes de ir al supermercado para evitar gastos innecesarios.');
+        try {
+            const token = localStorage.getItem('token');
+            const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/ai/analyze`, {}, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (res.data && typeof res.data === 'string') {
+                setAnalysis(res.data);
+            } else {
+                setAnalysis('No se pudo analizar. La respuesta no es válida.');
+            }
+        } catch (err) {
+            console.error('Error al analizar con Celia:', err);
+            setAnalysis('Error al analizar con Celia. Intenta nuevamente.');
+        } finally {
             setAnalyzing(false);
-        }, 3000);
+        }
     };
 
     const handleBudgetUpdate = async () => {
