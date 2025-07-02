@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight, Info, DollarSign, FileText, Upload, Brain } from 'lucide-react';
+import axios from 'axios';
 
 interface Transaction {
     id: string;
@@ -130,7 +131,18 @@ export default function TransactionsList({ userId }: { userId: string }) {
     const [uploadSuccess, setUploadSuccess] = useState('');
 
     const fetchTransactions = async () => {
-        console.log('Fetching transactions...');
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/transactions/${userId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setTransactions(response.data);
+        } catch (error) {
+            console.error('Error fetching transactions:', error);
+            setError('Error al cargar las transacciones');
+        }
     };
 
     const handleCreateTransaction = async () => {
