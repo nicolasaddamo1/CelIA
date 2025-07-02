@@ -235,11 +235,29 @@ export default function TransactionsList({ userId }: { userId: string }) {
         }
     };
 
-    const handleBudgetUpdate = async () => {
+    const handleBudgetUpdate = async (e: React.FormEvent) => {
+        e.preventDefault();
         setError('');
         setSuccess('');
-        setSuccess('✅ Presupuesto actualizado exitosamente');
-        setNewBudget('');
+
+        try {
+            const token = localStorage.getItem('token');
+            const payload = {
+                budget: parseFloat(newAmount),
+            };
+            await axios.put(`${import.meta.env.VITE_BACKEND_URL}/users/${userId}`, payload, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setSuccess('✅ Presupuesto actualizado exitosamente');
+            setNewAmount('');
+        }
+        catch (error) {
+            console.error(error);
+            setError('Error al actualizar el presupuesto');
+
+        }
     };
 
     useEffect(() => {
