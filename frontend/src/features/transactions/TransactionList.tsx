@@ -177,17 +177,38 @@ export default function TransactionsList({ userId }: { userId: string }) {
         }
     };
 
-    const handleCsvUpload = async () => {
+    const handleCsvUpload = async (e: React.FormEvent) => {
+        e.preventDefault();
         if (!csvFile) {
             setUploadError('Por favor, selecciona un archivo primero.');
             return;
         }
+
+        setUploadError('');
+        setUploadSuccess('');
         setUploading(true);
-        setTimeout(() => {
+
+        const formData = new FormData();
+        formData.append('file', csvFile);
+
+        try {
+            const token = localStorage.getItem('token');
+            await axios.post(`${import.meta.env.VITE_BACKEND_URL}/import-files/upload`, formData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
             setUploadSuccess('✅ El archivo CSV se cargó correctamente');
             setCsvFile(null);
+            fetchTransactions();
+        } catch (error) {
+            console.error(error);
+            setUploadError('Error al subir el archivo CSV');
+        } finally {
             setUploading(false);
-        }, 2000);
+        }
+
     };
 
     const handleAnalyze = async () => {
