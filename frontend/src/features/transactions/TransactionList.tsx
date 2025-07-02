@@ -145,14 +145,36 @@ export default function TransactionsList({ userId }: { userId: string }) {
         }
     };
 
-    const handleCreateTransaction = async () => {
+    const handleCreateTransaction = async (e: React.FormEvent) => {
+        e.preventDefault();
         setError('');
         setSuccess('');
-        setSuccess('✅ Transacción creada exitosamente');
-        setNewDate('');
-        setNewDescription('');
-        setNewAmount('');
-        setNewCategoryId('1');
+
+        try {
+            const token = localStorage.getItem('token');
+            const payload = {
+                date: newDate,
+                description: newDescription,
+                amount: parseFloat(newAmount),
+                category: {
+                    id: newCategoryId,
+                },
+            };
+            await axios.post('http://localhost:3001/transactions', payload, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setSuccess('✅ Transacción creada exitosamente');
+            setNewDate('');
+            setNewDescription('');
+            setNewAmount('');
+            setNewCategoryId('1');
+            fetchTransactions();
+        } catch (error) {
+            console.error(error);
+            setError('Error al crear la transacción');
+        }
     };
 
     const handleCsvUpload = async () => {
