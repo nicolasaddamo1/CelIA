@@ -160,7 +160,7 @@ export default function TransactionsList({ userId }: { userId: string }) {
                     id: newCategoryId,
                 },
             };
-            await axios.post('http://localhost:3001/transactions', payload, {
+            await axios.post(`${import.meta.env.VITE_BACKEND_URL}/transactions`, payload, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -344,7 +344,7 @@ export default function TransactionsList({ userId }: { userId: string }) {
                 <div className="overflow-x-auto">
                     <table className="w-full">
                         <thead>
-                            <tr className="bg-gray-100 text-left">
+                            <tr className="bg-gray-200 text-left">
                                 <th className="py-4 px-4 text-lg font-medium text-gray-700 rounded-l-lg">Fecha</th>
                                 <th className="py-4 px-4 text-lg font-medium text-gray-700">¿Qué fue?</th>
                                 <th className="py-4 px-4 text-lg font-medium text-gray-700">Cuánto</th>
@@ -355,12 +355,12 @@ export default function TransactionsList({ userId }: { userId: string }) {
                             {transactions.length > 0 ? (
                                 transactions.map((t) => (
                                     <tr key={t.id} className="border-t border-gray-200">
-                                        <td className="py-4 px-4 text-lg">{new Date(t.date).toLocaleDateString()}</td>
-                                        <td className="py-4 px-4 text-lg">{t.description}</td>
+                                        <td className="py-4 px-4 text-lg font-medium text-purple-600">{new Date(t.date).toLocaleDateString()}</td>
+                                        <td className="py-4 px-4 text-lg font-medium text-purple-600">{t.description}</td>
                                         <td className="py-4 px-4 text-lg font-medium text-red-600">
                                             ${Number(t.amount).toFixed(2)}
                                         </td>
-                                        <td className="py-4 px-4 text-lg">{t.category?.name || 'Sin categoría'}</td>
+                                        <td className="py-4 px-4 text-lg font-medium text-purple-600">{t.category?.name || 'Sin categoría'}</td>
                                     </tr>
                                 ))
                             ) : (
