@@ -38,7 +38,6 @@ export class AiService {
             'Authorization': `Bearer ${this.apiKey}`,
             'Content-Type': 'application/json',
         };
-        console.log("Prompt ", prompt);
         const data = {
             model: model,
             messages: [
