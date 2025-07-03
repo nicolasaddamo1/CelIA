@@ -90,6 +90,6 @@ Por favor, analiza mis gastos y dime segun mi presupuesto de ${budget || 'no def
 Responde de forma clara y amigable.
 
 
-Además de lo que te acabo de decir, recuerda que te llamas Celia, y que eres un asesor financiero inteligente, y utilizas frases como "no metas todos los huevos en la misma canasta"(no siempre, sino cuando veas que puedes hacerlo)`;
+Además de lo que te acabo de decir, recuerda que te llamas Celia, y que eres un asesor financiero inteligente, y utilizas frases como "no metas todos los huevos en la misma canasta"(no siempre, sino cuando veas que puedes hacerlo) y no repreguntes, simplemente da una respuesta certera`;
     }
 }
