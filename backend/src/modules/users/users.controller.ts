@@ -31,7 +31,7 @@ export class UsersController {
     async updateUser(@Param('id') id: string, @Body() user: User): Promise<Partial<User> | string> {
         return await this.usersService.updateUser(id, user);
     }
-    @Put(':id')
+    @Put('/budget/:id')
     @UseGuards(JwtAuthGuard)
     async budget(@Param('id') id: string, @Body() user: User): Promise<Partial<User> | string> {
         if (!user.budget) {
