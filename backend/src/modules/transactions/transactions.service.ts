@@ -34,7 +34,6 @@ export class TransactionsService {
             where: { user: { id: userId } },
             order: { date: 'DESC' },
         });
-        console.log(result);
         return result;
     }
 }
