@@ -243,9 +243,9 @@ export default function TransactionsList({ userId }: { userId: string }) {
         try {
             const token = localStorage.getItem('token');
             const payload = {
-                budget: parseFloat(newAmount),
+                budget: parseFloat(newBudget),
             };
-            await axios.put(`${import.meta.env.VITE_BACKEND_URL}/users/${userId}`, payload, {
+            await axios.put(`${import.meta.env.VITE_BACKEND_URL}/users/budget/${userId}`, payload, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
