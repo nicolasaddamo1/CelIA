@@ -451,7 +451,7 @@ export default function TransactionsList({ userId }: { userId: string }) {
                             className="w-full p-4 border-2 border-gray-300 rounded-lg text-lg bg-white
                                      file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 
                                      file:text-lg file:font-medium file:bg-purple-50 file:text-purple-700
-                                     hover:file:bg-purple-100 cursor-pointer focus:border-purple-500 focus:outline-none"
+                                     hover:file:bg-purple-100 cursor-pointer focus:border-purple-500 focus:outline-none text-gray-700"
                         />
                         <p className="text-gray-500 text-sm mt-1">Solo archivos CSV (como los de Excel)</p>
                     </div>
